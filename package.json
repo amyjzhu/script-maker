@@ -1,7 +1,11 @@
 {
   "name": "script-maker",
   "version": "0.0.1",
+  "scripts": [
+    {"build": "browserify main.js > bundle.js"}
+  ],
   "dependencies": {
-    
+    "@types/jquery": "^3.2.16",
+    "jquery": "^3.2.1"
   }
 }
