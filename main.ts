@@ -16,10 +16,11 @@ $(document).ready(function() {
 
 function save(object : any) : void {
     let options = {
-        url: "https://localhost:5000/save",
-        method:"POST",
-        json:object
-    };
+        url: "http://localhost:5000/save",
+        headers: {"Content-Type": "application/json"},
+        body:object,
+        json:true
+    }; // request.post
     request.post(options, function(err) {
         if (err) throw err;
         else console.log("Request successful");

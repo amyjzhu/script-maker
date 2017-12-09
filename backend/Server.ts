@@ -10,6 +10,8 @@ let filePath = "sample/script.json";
 
 app.use(express.static(path.join(__dirname, ''))); // ??
 app.use(cors());
+app.use(bodyParser.json());
+
 
 app.get('/', function(req, res) {
     res.send('Received request\n');

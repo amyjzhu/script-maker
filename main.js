@@ -10,10 +10,11 @@ $(document).ready(function () {
 // next implement guards for things
 function save(object) {
     var options = {
-        url: "https://localhost:5000/save",
-        method: "POST",
-        json: object
-    };
+        url: "http://localhost:5000/save",
+        headers: { "Content-Type": "application/json" },
+        body: object,
+        json: true
+    }; // request.post
     request.post(options, function (err) {
         if (err)
             throw err;
