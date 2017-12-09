@@ -1,8 +1,13 @@
 var $ = require("jquery");
 var fs = require("browserify-fs");
 var request = require("request");
+var rp = ("request-promise");
+
 
 $(document).ready(function() {
+
+    getConstants();
+    $("#reload").click(() => getConstants());
 
     $("#save").click(function() {
         let event = parse();
@@ -11,6 +16,35 @@ $(document).ready(function() {
 
     }
 );
+
+// abstract out the calls
+function getConstants() {
+    let options = {
+        method: "GET",
+        uri:"http://localhost:5000/constants",
+        json:true
+    }
+    rp(options).then(function (req) {
+        console.log(body);
+        populateDropdowns(body);
+    }).catch(function(err) {
+
+    })
+}
+
+function populateDropdowns(constants: any) {
+    let res = JSON.parse(constants);
+    // implement error handling on clean-up
+    let char : string[] = res["characters"];
+    let htmlBlock = char.map((name) => {
+        return "<option value=" + name + ">" + name + "</option>";
+    }).reduce((acc : string, curr : string) : string => {
+        return acc += curr;
+    },"");
+    $("#current-event--character").append(htmlBlock);
+}
+
+
 
 // next implement guards for things
 
@@ -26,6 +60,7 @@ function save(object : any) : void {
         else console.log("Request successful");
     }).on('response', function(response) {
         console.log(response.statusCode);
+        alert("Save successful.");
     });
 }
 

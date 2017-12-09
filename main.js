@@ -1,12 +1,39 @@
 var $ = require("jquery");
 var fs = require("browserify-fs");
 var request = require("request");
+var rp = ("request-promise");
 $(document).ready(function () {
+    getConstants();
+    $("#reload").click(function () { return getConstants(); });
     $("#save").click(function () {
         var event = parse();
         save(event);
     });
 });
+// abstract out the calls
+function getConstants() {
+    var options = {
+        method: "GET",
+        uri: "http://localhost:5000/constants",
+        json: true
+    };
+    rp(options).then(function (req) {
+        console.log(body);
+        populateDropdowns(body);
+    }).catch(function (err) {
+    });
+}
+function populateDropdowns(constants) {
+    var res = JSON.parse(constants);
+    // implement error handling on clean-up
+    var char = res["characters"];
+    var htmlBlock = char.map(function (name) {
+        return "<option value=" + name + ">" + name + "</option>";
+    }).reduce(function (acc, curr) {
+        return acc += curr;
+    }, "");
+    $("#current-event--character").append(htmlBlock);
+}
 // next implement guards for things
 function save(object) {
     var options = {
@@ -22,6 +49,7 @@ function save(object) {
             console.log("Request successful");
     }).on('response', function (response) {
         console.log(response.statusCode);
+        alert("Save successful.");
     });
 }
 function parse() {

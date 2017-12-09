@@ -13,9 +13,15 @@
     <input type="text" class="current-event--input--full optional" id="current-event--description" value="Description"><br>
     <textarea class="current-event--input--full" id="current-event--script" value="Script"></textarea><br>
     <p>
-        <input type="text" class="current-event--input--half" id="current-event--character" value="Character">
+        <select class="current-event--input--half" id="current-event--character" value="Character">
+        </select>
+
         <input type="text" class="current-event--input--half" id="current-event--priority" value="Priority"><br>
-        <input type="text" class="current-event--input--full" id="current-event--type" value="Event type"><br>
+
+        <select class="current-event--input--full" id="current-event--type" value="Event type">
+
+        </select><br>
+
         <input type="text" class="current-event--input--full" id="current-event--prerequisites" value="Prerequisites"><br>
 
     </p>
@@ -30,6 +36,7 @@
     </p>
 
     <button id="save">Save!</button>
+    <button id="reload">Reload choices.</button>
 </div>
 
 
