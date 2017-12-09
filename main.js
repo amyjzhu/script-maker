@@ -1,7 +1,7 @@
 var $ = require("jquery");
 var fs = require("browserify-fs");
 var request = require("request");
-var rp = ("request-promise");
+var rp = require("request-promise");
 $(document).ready(function () {
     getConstants();
     $("#reload").click(function () { return getConstants(); });
@@ -17,22 +17,34 @@ function getConstants() {
         uri: "http://localhost:5000/constants",
         json: true
     };
-    rp(options).then(function (req) {
+    rp(options).then(function (body) {
         console.log(body);
         populateDropdowns(body);
     }).catch(function (err) {
+        throw err;
     });
 }
-function populateDropdowns(constants) {
-    var res = JSON.parse(constants);
+function populateDropdowns(res) {
     // implement error handling on clean-up
-    var char = res["characters"];
-    var htmlBlock = char.map(function (name) {
+    var keys = Object.keys(res);
+    for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+        var k = keys_1[_i];
+        console.log("Populating " + k);
+        populateDropdown(k, res[k]);
+    }
+}
+function populateDropdown(property, values) {
+    var htmlBlock = values.map(function (name) {
         return "<option value=" + name + ">" + name + "</option>";
     }).reduce(function (acc, curr) {
         return acc += curr;
     }, "");
-    $("#current-event--character").append(htmlBlock);
+    try {
+        $("#current-event--" + property).append(htmlBlock);
+    }
+    catch (err) {
+        // do nothing lmao
+    }
 }
 // next implement guards for things
 function save(object) {

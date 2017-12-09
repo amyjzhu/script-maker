@@ -1,6 +1,6 @@
-[{"characters":[
+{"character":[
   "Danning", "Alexia", "Amy", "Dale"
-]},
-  {"types": ["Special", "Seasonal", "Arc", "Trigger", "Everyday"]},
-  {"locations":["Home", "Cafe"]},
-  {"statistics":["Affection", "Intelligence"]}]
+],
+  "type": ["Special", "Seasonal", "Arc", "Trigger", "Everyday"],
+  "location":["Home", "Cafe"],
+  "statistic":["Affection", "Intelligence"]}

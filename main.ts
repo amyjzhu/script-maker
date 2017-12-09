@@ -1,7 +1,7 @@
 var $ = require("jquery");
 var fs = require("browserify-fs");
 var request = require("request");
-var rp = ("request-promise");
+var rp = require("request-promise");
 
 
 $(document).ready(function() {
@@ -23,25 +23,36 @@ function getConstants() {
         method: "GET",
         uri:"http://localhost:5000/constants",
         json:true
-    }
-    rp(options).then(function (req) {
+    };
+
+    rp(options).then(function (body) {
         console.log(body);
         populateDropdowns(body);
     }).catch(function(err) {
-
+        throw err;
     })
 }
 
-function populateDropdowns(constants: any) {
-    let res = JSON.parse(constants);
+function populateDropdowns(res: any) {
     // implement error handling on clean-up
-    let char : string[] = res["characters"];
-    let htmlBlock = char.map((name) => {
+    let keys = Object.keys(res);
+    for (let k of keys) {
+        console.log("Populating " + k);
+        populateDropdown(k, res[k]);
+    }
+}
+
+function populateDropdown(property : string, values : any) {
+    let htmlBlock = values.map((name) => {
         return "<option value=" + name + ">" + name + "</option>";
     }).reduce((acc : string, curr : string) : string => {
         return acc += curr;
     },"");
-    $("#current-event--character").append(htmlBlock);
+    try {
+        $("#current-event--" + property).append(htmlBlock);
+    } catch (err) {
+        // do nothing lmao
+    }
 }
 
 
