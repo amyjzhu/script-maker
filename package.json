@@ -2,10 +2,23 @@
   "name": "script-maker",
   "version": "0.0.1",
   "scripts": [
-    {"build": "browserify main.js > bundle.js"}
+    {
+      "build": "browserify main.js > bundle.js"
+    }
   ],
   "dependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/cors": "^2.8.3",
+    "@types/express": "^4.0.39",
     "@types/jquery": "^3.2.16",
-    "jquery": "^3.2.1"
+    "@types/request": "^2.0.8",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "jquery": "^3.2.1",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "browserify-fs": "^1.0.0"
   }
 }

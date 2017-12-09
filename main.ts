@@ -1,24 +1,38 @@
 var $ = require("jquery");
+var fs = require("browserify-fs");
+var request = require("request");
 
 $(document).ready(function() {
 
     $("#save").click(function() {
-        parse();
+        let event = parse();
+        save(event);
     })
 
     }
 );
 
+// next implement guards for things
 
-
-function save() : void {
-
+function save(object : any) : void {
+    let options = {
+        url: "https://localhost:5000/save",
+        method:"POST",
+        json:object
+    };
+    request.post(options, function(err) {
+        if (err) throw err;
+        else console.log("Request successful");
+    }).on('response', function(response) {
+        console.log(response.statusCode);
+    });
 }
 
-function parse() : void {
+function parse() : any {
     let title : string = $("#current-event--title").val();
     let desc : string = $("#current-event--description").val();
     let scriptText : string = $("#current-event--script").val();
+    let script = parseScript(scriptText);
     let character = $("#current-event--character").val();
     let priority = $("#current-event--priority").val();
     let type = $("#current-event--type").val();
@@ -28,7 +42,7 @@ function parse() : void {
     let event = {
         "title": title,
         "description": desc,
-        "script": scriptText,
+        "script": script,
         "character": character,
         "priority":priority,
         "type": type,
@@ -37,7 +51,9 @@ function parse() : void {
     };
 
     $("#result").html(event);
-    console.log(event)
+    console.log(event);
+
+    return event;
 }
 
 function getChoices() : any[] {
@@ -53,6 +69,24 @@ function getChoices() : any[] {
     return choices;
 }
 
-function parseScript() {
+function parseScript(script : string) : any[] {
+    let allCommands = [];
+    let entries : string[] = script.split("\n");
 
+    for (let i = 0; i < entries.length; i++) {
+        let text = entries[i];
+        let line;
+        if (text[0] == "#") {
+            let actions = text.split("#");
+            let name = actions[1];
+            let args = actions.slice(2);
+            line = {"action": name,
+            "arguments":args};
+        }
+        else {
+            line = {"text": text};
+        }
+        allCommands[i] = line;
+    }
+    return allCommands;
 }

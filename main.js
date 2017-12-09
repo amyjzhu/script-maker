@@ -1,15 +1,33 @@
 var $ = require("jquery");
+var fs = require("browserify-fs");
+var request = require("request");
 $(document).ready(function () {
     $("#save").click(function () {
-        parse();
+        var event = parse();
+        save(event);
     });
 });
-function save() {
+// next implement guards for things
+function save(object) {
+    var options = {
+        url: "https://localhost:5000/save",
+        method: "POST",
+        json: object
+    };
+    request.post(options, function (err) {
+        if (err)
+            throw err;
+        else
+            console.log("Request successful");
+    }).on('response', function (response) {
+        console.log(response.statusCode);
+    });
 }
 function parse() {
     var title = $("#current-event--title").val();
     var desc = $("#current-event--description").val();
     var scriptText = $("#current-event--script").val();
+    var script = parseScript(scriptText);
     var character = $("#current-event--character").val();
     var priority = $("#current-event--priority").val();
     var type = $("#current-event--type").val();
@@ -18,7 +36,7 @@ function parse() {
     var event = {
         "title": title,
         "description": desc,
-        "script": scriptText,
+        "script": script,
         "character": character,
         "priority": priority,
         "type": type,
@@ -27,6 +45,7 @@ function parse() {
     };
     $("#result").html(event);
     console.log(event);
+    return event;
 }
 function getChoices() {
     var choices = [];
@@ -38,5 +57,23 @@ function getChoices() {
     }
     return choices;
 }
-function parseScript() {
+function parseScript(script) {
+    var allCommands = [];
+    var entries = script.split("\n");
+    for (var i = 0; i < entries.length; i++) {
+        var text = entries[i];
+        var line = void 0;
+        if (text[0] == "#") {
+            var actions = text.split("#");
+            var name_1 = actions[1];
+            var args = actions.slice(2);
+            line = { "action": name_1,
+                "arguments": args };
+        }
+        else {
+            line = { "text": text };
+        }
+        allCommands[i] = line;
+    }
+    return allCommands;
 }
