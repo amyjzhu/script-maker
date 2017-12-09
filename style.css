@@ -1,0 +1,19 @@
+.current-event {
+    position: fixed;
+    width:90vw;
+    background-color: hotpink;
+}
+
+.current-event--input--full {
+    padding: 2px 2px 2px 2px;
+    width:80%;
+}
+
+.current-event--input--half {
+/*    padding: 2px 2px 2px 2px; */
+    width:40%;
+}
+
+#current-event--script {
+    height:40vh;
+}
