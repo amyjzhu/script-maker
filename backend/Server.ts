@@ -20,7 +20,8 @@ app.get('/', function(req, res) {
 app.post('/save', function(req, res) {
     let data = req.body;
     console.log(data);
-    fs.writeFile(filePath, data, (err) => {
+    let dataString = JSON.stringify(data);
+    fs.writeFile(filePath, dataString, (err) => {
         if (err) throw err;
         else res.status(200).send("hooray!");
     })

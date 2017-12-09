@@ -16,7 +16,8 @@ app.get('/', function (req, res) {
 app.post('/save', function (req, res) {
     var data = req.body;
     console.log(data);
-    fs.writeFile(filePath, data, function (err) {
+    var dataString = JSON.stringify(data);
+    fs.writeFile(filePath, dataString, function (err) {
         if (err)
             throw err;
         else

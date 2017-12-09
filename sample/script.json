@@ -1,1 +1,1 @@
-[object Object]
+{"title":"Title","description":"Description","script":[{"text":"hey!"},{"text":"hello!"},{"action":"action","arguments":["with","args"]}],"character":"Character","priority":"Priority","type":"Event type","prerequisites":"Prerequisites","choices":[{},{},{}]}
