@@ -1,11 +1,12 @@
 {
   "name": "script-maker",
   "version": "0.0.1",
-  "scripts": [
+  "scripts":
     {
-      "build": "browserify main.js > bundle.js"
+      "build": "browserify main.js > bundle.js",
+      "serve":"node backend/Server.js"
     }
-  ],
+  ,
   "dependencies": {
     "@types/body-parser": "^1.16.8",
     "@types/cors": "^2.8.3",

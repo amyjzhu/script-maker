@@ -2,6 +2,7 @@
     position: fixed;
     width:90vw;
     background-color: hotpink;
+    overflow-y:scroll;
 }
 
 .current-event--input--full {
