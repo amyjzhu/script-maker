@@ -46,27 +46,6 @@ function download(info : any) {
     document.body.removeChild(a);
 }
 
-function getExistingScriptInfo()  {
-    let options = {
-        method: "GET",
-        uri:server + "data",
-        json:true
-    };
-
-    rp(options).then(function(body) {
-        console.log(body);
-        $("#save").prop("disabled", false);
-        eventsCache.push.apply(eventsCache,body);
-        console.log(eventsCache);
-        displayOldEvents();
-    }).catch(function(err) {
-        alert("Cannot connect to server. Either talk to Amy or refresh the page.");
-        throw err;
-    });
-
-    // then display existing info
-}
-
 function displayOldEvents() {
     for (let thing of eventsCache) {
         console.log("making display for " + thing);
@@ -93,23 +72,6 @@ function makePrettyHtmlElement(entry : any) {
 }
 
 
-
-// abstract out the calls
-function getConstants() {
-    let options = {
-        method: "GET",
-        uri:server + "constants",
-        json:true
-    };
-
-    rp(options).then(function (body) {
-        console.log(body);
-        populateDropdowns(body);
-    }).catch(function(err) {
-        throw err;
-    })
-}
-
 function populateDropdowns(res: any) {
     // implement error handling on clean-up
     let keys = Object.keys(res);
@@ -132,6 +94,49 @@ function populateDropdown(property : string, values : any) {
     }
 }
 
+
+
+function getExistingScriptInfo()  {
+    let options = {
+        method: "GET",
+        uri:server + "data",
+        json:true
+    };
+
+    rp(options).then(function(body) {
+        console.log(body);
+        $("#save").prop("disabled", false);
+        eventsCache.push.apply(eventsCache,body);
+        console.log(eventsCache);
+        displayOldEvents();
+    }).catch(function(err) {
+        alert("Cannot connect to server. Either talk to Amy or refresh the page.");
+        throw err;
+    });
+
+    // then display existing info
+}
+
+
+
+// abstract out the calls
+function getConstants() {
+    let options = {
+        method: "GET",
+        uri:server + "constants",
+        json:true
+    };
+
+    rp(options).then(function (body) {
+        console.log(body);
+        populateDropdowns(body);
+    }).catch(function(err) {
+        throw err;
+    })
+}
+
+
+
 // next implement guards for things
 
 function save(object : any) : void {
@@ -150,6 +155,8 @@ function save(object : any) : void {
         alert("Save successful.");
     });
 }
+
+
 
 function parse() : any {
     let title : string = $("#current-event--title").val();

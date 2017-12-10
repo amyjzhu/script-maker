@@ -32763,7 +32763,7 @@ function makePrettyHtmlElement(entry) {
         console.log(entry);
         var div = $("<div>", { "class": "old-event--display" /*, id:entry["priority"]*/ });
         document.createElement("div");
-        var title = document.createElement("h1");
+        var title = document.createElement("h3");
         title.textContent = entry.title;
         var description = document.createElement("span");
         description.textContent = entry.description;
