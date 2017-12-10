@@ -32702,14 +32702,51 @@ var fs = require("browserify-fs");
 var request = require("request");
 var rp = require("request-promise");
 var server = "http://13.59.22.196:5000/";
+// make object
+var cache = [];
 $(document).ready(function () {
     getConstants();
     $("#reload").click(function () { return getConstants(); });
+    //refactor with promises
+    getExistingScriptInfo();
+    $("#download").click(function () {
+        var event = parse();
+        download(event);
+    });
     $("#save").click(function () {
         var event = parse();
-        save(event);
+        cache[cache.length + 1] = event;
+        save(cache);
     });
 });
+function download(info) {
+    var a = window.document.createElement('a');
+    a.href = window.URL.createObjectURL(new Blob([
+        JSON.stringify(info)
+    ], { type: 'application/json' }));
+    a.download = 'script_local.json';
+    // Append anchor to body.
+    document.body.appendChild(a);
+    a.click();
+    // Remove anchor from body
+    document.body.removeChild(a);
+}
+function getExistingScriptInfo() {
+    var options = {
+        method: "GET",
+        uri: server + "data",
+        json: true
+    };
+    rp(options).then(function (body) {
+        console.log(body);
+        $("#save").prop("disabled", false);
+        cache = body;
+        makePrettyHtmlElement(body[0]);
+    }).catch(function (err) {
+        throw err;
+    });
+    // then display existing info
+}
 // abstract out the calls
 function getConstants() {
     var options = {
@@ -32746,12 +32783,23 @@ function populateDropdown(property, values) {
         // do nothing lmao
     }
 }
+function makePrettyHtmlElement(entry) {
+    var div = $("<div>", { "class": "old-event--display" /*, id:entry["priority"]*/ });
+    document.createElement("div");
+    var title = document.createElement("h1");
+    title.textContent = entry["title"] + "br";
+    var description = document.createElement("span");
+    description.textContent = entry["description"];
+    div.append(title);
+    div.append(description);
+    $("#result-box").append(div);
+}
 // next implement guards for things
 function save(object) {
     var options = {
         url: server + "save",
         headers: { "Content-Type": "application/json" },
-        body: object,
+        body: [object],
         json: true
     }; // request.post
     request.post(options, function (err) {

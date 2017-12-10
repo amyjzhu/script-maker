@@ -5,6 +5,9 @@ var rp = require("request-promise");
 
 let server = "http://13.59.22.196:5000/";
 
+// make object
+let cache = [];
+
 $(document).ready(function() {
 
     getConstants();
@@ -15,17 +18,31 @@ $(document).ready(function() {
 
     $("#download").click(function() {
         let event = parse();
-        save(event);
+        download(event);
     })
 
     $("#save").click(function() {
         let event = parse();
-        save(event);
+        cache[cache.length+1] = event;
+        save(cache);
     })
 
     }
 );
 
+function download(info : any) {
+    let a = window.document.createElement('a');
+    a.href = window.URL.createObjectURL(new Blob([
+        JSON.stringify(info)], {type : 'application/json'}));
+    a.download = 'script_local.json';
+
+// Append anchor to body.
+    document.body.appendChild(a);
+    a.click();
+
+// Remove anchor from body
+    document.body.removeChild(a);
+}
 
 function getExistingScriptInfo()  {
     let options = {
@@ -37,6 +54,8 @@ function getExistingScriptInfo()  {
     rp(options).then(function(body) {
         console.log(body);
         $("#save").prop("disabled", false);
+        cache = body;
+        makePrettyHtmlElement(body[0]);
     }).catch(function(err) {
         throw err;
     });
@@ -84,6 +103,21 @@ function populateDropdown(property : string, values : any) {
 }
 
 
+function makePrettyHtmlElement(entry : any) {
+    let div = $("<div>", {"class":"old-event--display"/*, id:entry["priority"]*/});
+    document.createElement("div");
+    let title = document.createElement("h1");
+    title.textContent = entry["title"] + "br";
+    let description = document.createElement("span");
+    description.textContent =  entry["description"];
+
+    div.append(title);
+    div.append(description);
+
+    $("#result-box").append(div);
+}
+
+
 
 // next implement guards for things
 
@@ -91,7 +125,7 @@ function save(object : any) : void {
     let options = {
         url: server + "save",
         headers: {"Content-Type": "application/json"},
-        body:object,
+        body:[object],
         json:true
     }; // request.post
     request.post(options, function(err) {
