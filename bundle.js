@@ -32703,7 +32703,7 @@ var request = require("request");
 var rp = require("request-promise");
 var server = "http://13.59.22.196:5000/";
 // make object
-var cache = [];
+var eventsCache = [];
 $(document).ready(function () {
     getConstants();
     $("#reload").click(function () { return getConstants(); });
@@ -32713,10 +32713,12 @@ $(document).ready(function () {
         var event = parse();
         download(event);
     });
+    // ignore if already cached - hashmap with title?
     $("#save").click(function () {
         var event = parse();
-        cache[cache.length + 1] = event;
-        save(cache);
+        eventsCache[eventsCache.length] = event;
+        console.log(eventsCache);
+        save(eventsCache);
     });
 });
 function download(info) {
@@ -32740,12 +32742,34 @@ function getExistingScriptInfo() {
     rp(options).then(function (body) {
         console.log(body);
         $("#save").prop("disabled", false);
-        cache = body;
-        makePrettyHtmlElement(body[0]);
+        eventsCache.push.apply(eventsCache, body);
+        console.log(eventsCache);
+        displayOldEvents();
     }).catch(function (err) {
         throw err;
     });
     // then display existing info
+}
+function displayOldEvents() {
+    for (var _i = 0, eventsCache_1 = eventsCache; _i < eventsCache_1.length; _i++) {
+        var thing = eventsCache_1[_i];
+        console.log("making display for " + thing);
+        makePrettyHtmlElement(thing);
+    }
+}
+function makePrettyHtmlElement(entry) {
+    if (entry != null) {
+        console.log(entry);
+        var div = $("<div>", { "class": "old-event--display" /*, id:entry["priority"]*/ });
+        document.createElement("div");
+        var title = document.createElement("h1");
+        title.textContent = entry.title;
+        var description = document.createElement("span");
+        description.textContent = entry.description;
+        div.append(title);
+        div.append(description);
+        $("#result-box").append(div);
+    }
 }
 // abstract out the calls
 function getConstants() {
@@ -32783,23 +32807,13 @@ function populateDropdown(property, values) {
         // do nothing lmao
     }
 }
-function makePrettyHtmlElement(entry) {
-    var div = $("<div>", { "class": "old-event--display" /*, id:entry["priority"]*/ });
-    document.createElement("div");
-    var title = document.createElement("h1");
-    title.textContent = entry["title"] + "br";
-    var description = document.createElement("span");
-    description.textContent = entry["description"];
-    div.append(title);
-    div.append(description);
-    $("#result-box").append(div);
-}
 // next implement guards for things
 function save(object) {
+    console.log("Saving " + JSON.stringify(object));
     var options = {
         url: server + "save",
         headers: { "Content-Type": "application/json" },
-        body: [object],
+        body: object,
         json: true
     }; // request.post
     request.post(options, function (err) {
