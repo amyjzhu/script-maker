@@ -32746,6 +32746,7 @@ function getExistingScriptInfo() {
         console.log(eventsCache);
         displayOldEvents();
     }).catch(function (err) {
+        alert("Cannot connect to server. Either talk to Amy or refresh the page.");
         throw err;
     });
     // then display existing info

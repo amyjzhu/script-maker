@@ -60,6 +60,7 @@ function getExistingScriptInfo()  {
         console.log(eventsCache);
         displayOldEvents();
     }).catch(function(err) {
+        alert("Cannot connect to server. Either talk to Amy or refresh the page.");
         throw err;
     });
 
@@ -79,7 +80,7 @@ function makePrettyHtmlElement(entry : any) {
         console.log(entry);
         let div = $("<div>", {"class": "old-event--display"/*, id:entry["priority"]*/});
         document.createElement("div");
-        let title = document.createElement("h1");
+        let title = document.createElement("h3");
         title.textContent = entry.title;
         let description = document.createElement("span");
         description.textContent = entry.description;
