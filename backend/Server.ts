@@ -33,7 +33,12 @@ app.post('/save', function(req, res) {
 });
 
 app.get('/data', function(req, res) {
-    res.status(500).send("Not yet implemented.");
+    fs.readFile(filePath, 'utf8', function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.status(200).send(result);
+        console.log("Sent constants");
+    });
 });
 
 // can't this just be a path to the resoure?

@@ -3,11 +3,20 @@ var fs = require("browserify-fs");
 var request = require("request");
 var rp = require("request-promise");
 
+let server = "http://13.59.22.196:5000/";
 
 $(document).ready(function() {
 
     getConstants();
     $("#reload").click(() => getConstants());
+
+    //refactor with promises
+    getExistingScriptInfo();
+
+    $("#download").click(function() {
+        let event = parse();
+        save(event);
+    })
 
     $("#save").click(function() {
         let event = parse();
@@ -17,11 +26,30 @@ $(document).ready(function() {
     }
 );
 
+
+function getExistingScriptInfo()  {
+    let options = {
+        method: "GET",
+        uri:server + "data",
+        json:true
+    };
+
+    rp(options).then(function(body) {
+        console.log(body);
+        $("#save").prop("disabled", false);
+    }).catch(function(err) {
+        throw err;
+    });
+
+    // then display existing info
+}
+
+
 // abstract out the calls
 function getConstants() {
     let options = {
         method: "GET",
-        uri:"http://localhost:5000/constants",
+        uri:server + "constants",
         json:true
     };
 
@@ -61,7 +89,7 @@ function populateDropdown(property : string, values : any) {
 
 function save(object : any) : void {
     let options = {
-        url: "http://localhost:5000/save",
+        url: server + "save",
         headers: {"Content-Type": "application/json"},
         body:object,
         json:true

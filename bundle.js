@@ -32701,6 +32701,7 @@ var $ = require("jquery");
 var fs = require("browserify-fs");
 var request = require("request");
 var rp = require("request-promise");
+var server = "http://13.59.22.196:5000/";
 $(document).ready(function () {
     getConstants();
     $("#reload").click(function () { return getConstants(); });
@@ -32713,7 +32714,7 @@ $(document).ready(function () {
 function getConstants() {
     var options = {
         method: "GET",
-        uri: "http://localhost:5000/constants",
+        uri: server + "constants",
         json: true
     };
     rp(options).then(function (body) {
@@ -32748,7 +32749,7 @@ function populateDropdown(property, values) {
 // next implement guards for things
 function save(object) {
     var options = {
-        url: "http://localhost:5000/save",
+        url: server + "save",
         headers: { "Content-Type": "application/json" },
         body: object,
         json: true
