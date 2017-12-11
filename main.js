@@ -12,7 +12,8 @@ $(document).ready(function () {
     getExistingScriptInfo();
     $("#download").click(function () {
         var event = parse();
-        download(event);
+        eventsCache.push(event);
+        download(eventsCache);
     });
     // ignore if already cached - hashmap with title?
     $("#save").click(function () {
@@ -20,6 +21,12 @@ $(document).ready(function () {
         eventsCache[eventsCache.length] = event;
         console.log(eventsCache);
         save(eventsCache);
+        addNewEvent(event);
+    });
+    $("#save-one-to-cache").click(function () {
+        var event = parse();
+        eventsCache.push(event);
+        addNewEvent(event);
     });
 });
 function download(info) {
@@ -40,6 +47,9 @@ function displayOldEvents() {
         console.log("making display for " + thing);
         makePrettyHtmlElement(thing);
     }
+}
+function addNewEvent(event) {
+    makePrettyHtmlElement(event);
 }
 function makePrettyHtmlElement(entry) {
     if (entry != null) {

@@ -3,6 +3,7 @@
     width:90vw;
     background-color: hotpink;
     overflow-y:scroll;
+    height:90vh;
 }
 
 .current-event--input--full {

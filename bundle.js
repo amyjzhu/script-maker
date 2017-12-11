@@ -32711,7 +32711,8 @@ $(document).ready(function () {
     getExistingScriptInfo();
     $("#download").click(function () {
         var event = parse();
-        download(event);
+        eventsCache.push(event);
+        download(eventsCache);
     });
     // ignore if already cached - hashmap with title?
     $("#save").click(function () {
@@ -32719,6 +32720,12 @@ $(document).ready(function () {
         eventsCache[eventsCache.length] = event;
         console.log(eventsCache);
         save(eventsCache);
+        addNewEvent(event);
+    });
+    $("#save-one-to-cache").click(function () {
+        var event = parse();
+        eventsCache.push(event);
+        addNewEvent(event);
     });
 });
 function download(info) {
@@ -32733,30 +32740,15 @@ function download(info) {
     // Remove anchor from body
     document.body.removeChild(a);
 }
-function getExistingScriptInfo() {
-    var options = {
-        method: "GET",
-        uri: server + "data",
-        json: true
-    };
-    rp(options).then(function (body) {
-        console.log(body);
-        $("#save").prop("disabled", false);
-        eventsCache.push.apply(eventsCache, body);
-        console.log(eventsCache);
-        displayOldEvents();
-    }).catch(function (err) {
-        alert("Cannot connect to server. Either talk to Amy or refresh the page.");
-        throw err;
-    });
-    // then display existing info
-}
 function displayOldEvents() {
     for (var _i = 0, eventsCache_1 = eventsCache; _i < eventsCache_1.length; _i++) {
         var thing = eventsCache_1[_i];
         console.log("making display for " + thing);
         makePrettyHtmlElement(thing);
     }
+}
+function addNewEvent(event) {
+    makePrettyHtmlElement(event);
 }
 function makePrettyHtmlElement(entry) {
     if (entry != null) {
@@ -32771,20 +32763,6 @@ function makePrettyHtmlElement(entry) {
         div.append(description);
         $("#result-box").append(div);
     }
-}
-// abstract out the calls
-function getConstants() {
-    var options = {
-        method: "GET",
-        uri: server + "constants",
-        json: true
-    };
-    rp(options).then(function (body) {
-        console.log(body);
-        populateDropdowns(body);
-    }).catch(function (err) {
-        throw err;
-    });
 }
 function populateDropdowns(res) {
     // implement error handling on clean-up
@@ -32807,6 +32785,38 @@ function populateDropdown(property, values) {
     catch (err) {
         // do nothing lmao
     }
+}
+function getExistingScriptInfo() {
+    var options = {
+        method: "GET",
+        uri: server + "data",
+        json: true
+    };
+    rp(options).then(function (body) {
+        console.log(body);
+        $("#save").prop("disabled", false);
+        eventsCache.push.apply(eventsCache, body);
+        console.log(eventsCache);
+        displayOldEvents();
+    }).catch(function (err) {
+        alert("Cannot connect to server. Either talk to Amy or refresh the page.");
+        throw err;
+    });
+    // then display existing info
+}
+// abstract out the calls
+function getConstants() {
+    var options = {
+        method: "GET",
+        uri: server + "constants",
+        json: true
+    };
+    rp(options).then(function (body) {
+        console.log(body);
+        populateDropdowns(body);
+    }).catch(function (err) {
+        throw err;
+    });
 }
 // next implement guards for things
 function save(object) {
