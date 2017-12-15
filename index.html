@@ -34,10 +34,24 @@
     <input type="text" class="current-event--input--half" id="current-event--choice3-result" value="Choice 3 Result"><br>
     </p>
 
-    <button id="download">Download all</button>
-    <button id="save-one-to-cache">Save event (CACHE ONLY -- transient!)</button>
-    <button id="save" disabled>Save all to server</button>
-    <button id="reload">Reload choices</button>
+    <div class="tooltip">
+        <button id="download">Download all</button>
+        <span class="tooltiptext">Downloads entire cache of events as json file.</span>
+    </div>
+
+    <div class="tooltip"><button id="save-one-to-cache">Save event (CACHE ONLY -- transient!)</button>
+        <span class="tooltiptext">Saves to local cache, gone after refresh.</span>
+    </div>
+
+    <div class="tooltip">
+        <button id="save" disabled>Save all to server</button>
+        <span class="tooltiptext">Saves to the remote, communal server.</span>
+    </div>
+
+    <div class="tooltip">
+        <button id="reload">Reload choices</button>
+        <span class="tooltiptext">Gets constants for events from server.</span>
+    </div>
 
     <div>
         Result:

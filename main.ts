@@ -35,7 +35,7 @@ $(document).ready(function() {
         let event = parse();
         eventsCache.push(event);
         addNewEvent(event);
-    })
+    });
 
     }
 );
