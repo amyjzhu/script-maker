@@ -32877,9 +32877,13 @@ function getChoices() {
     for (var i = 0; i < 3; i++) {
         var j = i + 1;
         var choiceString = "#current-event--choice" + j;
+        console.log(choiceString);
         var choiceStr = $(choiceString + "-category").val();
+        console.log(choiceStr);
         var goTo = $(choiceString + "-result").val();
-        var string = "{" + choiceStr + ": " + goTo + "}";
+        console.log(goTo);
+        var string = "{\"" + choiceStr + "\": \"" + goTo + "\"}";
+        console.log(string);
         choices[i] = JSON.parse(string);
     }
     return choices;

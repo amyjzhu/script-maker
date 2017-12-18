@@ -215,9 +215,13 @@ function getChoices() : any[] {
     for (let i = 0; i < 3; i++) {
         let j = i + 1;
         let choiceString = "#current-event--choice" + j;
+        console.log(choiceString);
         let choiceStr = $(choiceString + "-category").val();
+        console.log(choiceStr);
         let goTo = $(choiceString + "-result").val();
-        let string = "{" + choiceStr + ": " + goTo + "}";
+        console.log(goTo);
+        let string = "{\"" + choiceStr + "\": \"" + goTo + "\"}";
+        console.log(string);
         choices[i] = JSON.parse(string);
     }
 
