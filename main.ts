@@ -77,16 +77,18 @@ function makePrettyHtmlElement(entry : any) {
         title.textContent = entry.title;
         let description = document.createElement("span");
         description.textContent = entry.description;
-
-
-
+        let linebreak = document.createElement("br");
         console.log(entry.choices.toString());
         let choices = document.createElement("span");
         choices.textContent = JSON.stringify(entry.choices);
+        let text = document.createElement("p");
+        text.textContent = JSON.stringify(entry.script);
 
         div.append(title);
         div.append(description);
+        div.append(linebreak);
         div.append(choices);
+        div.append(text);
 
         $("#result-box").append(div);
     }

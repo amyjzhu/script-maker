@@ -32761,12 +32761,17 @@ function makePrettyHtmlElement(entry) {
         title.textContent = entry.title;
         var description = document.createElement("span");
         description.textContent = entry.description;
+        var linebreak = document.createElement("br");
         console.log(entry.choices.toString());
         var choices = document.createElement("span");
         choices.textContent = JSON.stringify(entry.choices);
+        var text = document.createElement("p");
+        text.textContent = JSON.stringify(entry.script);
         div.append(title);
         div.append(description);
+        div.append(linebreak);
         div.append(choices);
+        div.append(text);
         $("#result-box").append(div);
     }
 }
