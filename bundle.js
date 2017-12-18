@@ -32759,8 +32759,12 @@ function makePrettyHtmlElement(entry) {
         title.textContent = entry.title;
         var description = document.createElement("span");
         description.textContent = entry.description;
+        console.log(entry.choices.toString());
+        var choices = document.createElement("span");
+        choices.textContent = JSON.stringify(entry.choices);
         div.append(title);
         div.append(description);
+        div.append(choices);
         $("#result-box").append(div);
     }
 }
@@ -32862,11 +32866,16 @@ function parse() {
     return event;
 }
 function getChoices() {
+    console.log("getChoices");
     var choices = [];
     for (var i = 0; i < 3; i++) {
-        var choiceString = "#current-event--choice" + i + 1;
+        var j = i + 1;
+        var choiceString = "#current-event--choice" + j;
+        console.log(choiceString);
         var choice = $(choiceString + "-category").val();
+        console.log(choice);
         var goTo = $(choiceString + "-result").val();
+        console.log(goTo);
         choices[i] = { choice: goTo };
     }
     return choices;

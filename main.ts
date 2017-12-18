@@ -76,8 +76,15 @@ function makePrettyHtmlElement(entry : any) {
         let description = document.createElement("span");
         description.textContent = entry.description;
 
+
+
+        console.log(entry.choices.toString());
+        let choices = document.createElement("span");
+        choices.textContent = JSON.stringify(entry.choices);
+
         div.append(title);
         div.append(description);
+        div.append(choices);
 
         $("#result-box").append(div);
     }
@@ -199,12 +206,17 @@ function parse() : any {
 }
 
 function getChoices() : any[] {
+    console.log("getChoices");
     let choices = [];
 
     for (let i = 0; i < 3; i++) {
-        let choiceString = "#current-event--choice" + i+1;
+        let j = i + 1;
+        let choiceString = "#current-event--choice" + j;
+        console.log(choiceString);
         let choice = $(choiceString + "-category").val();
+        console.log(choice);
         let goTo = $(choiceString + "-result").val();
+        console.log(goTo);
         choices[i] = {choice: goTo};
     }
 
