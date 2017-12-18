@@ -7,6 +7,7 @@ let server = "http://13.59.22.196:5000/";
 
 // make object
 var eventsCache = [];
+var currentEvent = {};
 
 $(document).ready(function() {
 
@@ -25,6 +26,7 @@ $(document).ready(function() {
     // ignore if already cached - hashmap with title?
     $("#save").click(function() {
         let event = parse();
+        currentEvent = event;
         eventsCache[eventsCache.length] = event;
         console.log(eventsCache);
         save(eventsCache);
@@ -33,7 +35,7 @@ $(document).ready(function() {
 
     $("#save-one-to-cache").click(function() {
         let event = parse();
-        eventsCache.push(event);
+        currentEvent = event;
         addNewEvent(event);
     });
 
@@ -206,18 +208,15 @@ function parse() : any {
 }
 
 function getChoices() : any[] {
-    console.log("getChoices");
     let choices = [];
 
     for (let i = 0; i < 3; i++) {
         let j = i + 1;
         let choiceString = "#current-event--choice" + j;
-        console.log(choiceString);
-        let choice = $(choiceString + "-category").val();
-        console.log(choice);
+        let choiceStr = $(choiceString + "-category").val();
         let goTo = $(choiceString + "-result").val();
-        console.log(goTo);
-        choices[i] = {choice: goTo};
+        let string = "{" + choiceStr + ": " + goTo + "}";
+        choices[i] = JSON.parse(string);
     }
 
     return choices;

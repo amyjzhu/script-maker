@@ -32704,6 +32704,7 @@ var rp = require("request-promise");
 var server = "http://13.59.22.196:5000/";
 // make object
 var eventsCache = [];
+var currentEvent = {};
 $(document).ready(function () {
     getConstants();
     $("#reload").click(function () { return getConstants(); });
@@ -32717,6 +32718,7 @@ $(document).ready(function () {
     // ignore if already cached - hashmap with title?
     $("#save").click(function () {
         var event = parse();
+        currentEvent = event;
         eventsCache[eventsCache.length] = event;
         console.log(eventsCache);
         save(eventsCache);
@@ -32724,7 +32726,7 @@ $(document).ready(function () {
     });
     $("#save-one-to-cache").click(function () {
         var event = parse();
-        eventsCache.push(event);
+        currentEvent = event;
         addNewEvent(event);
     });
 });
@@ -32866,17 +32868,14 @@ function parse() {
     return event;
 }
 function getChoices() {
-    console.log("getChoices");
     var choices = [];
     for (var i = 0; i < 3; i++) {
         var j = i + 1;
         var choiceString = "#current-event--choice" + j;
-        console.log(choiceString);
-        var choice = $(choiceString + "-category").val();
-        console.log(choice);
+        var choiceStr = $(choiceString + "-category").val();
         var goTo = $(choiceString + "-result").val();
-        console.log(goTo);
-        choices[i] = { choice: goTo };
+        var string = "{" + choiceStr + ": " + goTo + "}";
+        choices[i] = JSON.parse(string);
     }
     return choices;
 }
