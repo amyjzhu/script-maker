@@ -220,12 +220,16 @@ function getChoices() : any[] {
         console.log(choiceStr);
         let goTo = $(choiceString + "-result").val();
         console.log(goTo);
-        let string = "{\"" + choiceStr + "\": \"" + goTo + "\"}";
+        let string = "{\"" + addSlashes(choiceStr) + "\": \"" + addSlases(goTo) + "\"}";
         console.log(string);
         choices[i] = JSON.parse(string);
     }
 
     return choices;
+}
+
+function addSlashes( str ) {
+    return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 }
 
 function parseScript(script : string) : any[] {

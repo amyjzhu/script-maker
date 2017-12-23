@@ -183,11 +183,14 @@ function getChoices() {
         console.log(choiceStr);
         var goTo = $(choiceString + "-result").val();
         console.log(goTo);
-        var string = "{\"" + choiceStr + "\": \"" + goTo + "\"}";
+        var string = "{\"" + addSlashes(choiceStr) + "\": \"" + addSlases(goTo) + "\"}";
         console.log(string);
         choices[i] = JSON.parse(string);
     }
     return choices;
+}
+function addSlashes(str) {
+    return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 }
 function parseScript(script) {
     var allCommands = [];
